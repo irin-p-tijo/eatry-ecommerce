@@ -35,5 +35,3 @@ func ConnectDatabase(cfg config.Config) (*gorm.DB, error) {
 	return db, dbErr
 
 }
-
-// test comment
