@@ -6,6 +6,8 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type ServerHTTP struct {
@@ -30,7 +32,7 @@ func NewServerHTTP(
 	router.LoadHTMLGlob("templates/*.html")
 
 	router.Use(gin.Logger())
-
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	/////////////////routes//////////////////////////
 	routes.AdminRoutes(router.Group("/admin"), adminHandler, categoryHandler, productHandler, couponHandler, paymentHandler, orderHandler)
 	routes.UserRoutes(router.Group("/user"), userHandler, cartHandler, orderHandler, paymentHandler, productHandler, wishlistHandler, walletHandler)

@@ -19,3 +19,5 @@ run: ## Start application
 
 wire: ## Generate wire_gen.go
 	cd pkg/di && wire
+swag: ## Generate swagger docs
+	swag init -g cmd/main.go -o ./cmd/docs
