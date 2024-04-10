@@ -19,6 +19,7 @@ func NewCategoryHandler(usecase services.CategoryUseCase) *CategoryHandler {
 		CategoryUseCase: usecase,
 	}
 }
+
 func (cat *CategoryHandler) AddCategory(c *gin.Context) {
 	var category domain.Category
 
@@ -37,6 +38,7 @@ func (cat *CategoryHandler) AddCategory(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "the category is added successfully", CategoryResponse, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
 func (cat *CategoryHandler) DeleteCategory(c *gin.Context) {
 	CategoryID, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
@@ -55,6 +57,7 @@ func (cat *CategoryHandler) DeleteCategory(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "Successfully deleted the Category", nil, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
 func (cat *CategoryHandler) GetCategory(c *gin.Context) {
 	pagestr := c.Query("page")
 	page, err := strconv.Atoi(pagestr)

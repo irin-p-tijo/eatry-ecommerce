@@ -20,6 +20,17 @@ func NewAdminHandler(usecase services.AdminUseCase) *AdminHandler {
 	}
 }
 
+// CreateAdmin godoc
+// @Summary Create a new admin
+// @Description Creates a new admin account
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Param body body models.AdminSignUp true "Admin signup details"
+// @Success 201 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /admin/create [post]
+
 func (ad *AdminHandler) CreateAdmin(c *gin.Context) {
 	var admin models.AdminSignUp
 	if err := c.ShouldBindJSON(&admin); err != nil {
@@ -38,6 +49,17 @@ func (ad *AdminHandler) CreateAdmin(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusCreated, "Successfully signed up the user", adminDetails, nil)
 	c.JSON(http.StatusCreated, successRes)
 }
+
+// LoginHandler godoc
+// @Summary Login as admin
+// @Description Logs in as an admin
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Param body body models.AdminLogin true "Admin login details"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /admin/login [post]
 func (ad *AdminHandler) LoginHandler(c *gin.Context) { // login handler for the admin
 
 	var adminDetails models.AdminLogin
@@ -58,6 +80,18 @@ func (ad *AdminHandler) LoginHandler(c *gin.Context) { // login handler for the 
 	c.JSON(http.StatusOK, successRes)
 
 }
+
+// GetUsers godoc
+// @Summary Get users
+// @Description Retrieves a list of users
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Param page query int true "Page number"
+// @Param count query int true "Number of users per page"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /admin/users [get]
 func (ad *AdminHandler) GetUsers(c *gin.Context) {
 	pageStr := c.Query("page")
 	page, err := strconv.Atoi(pageStr)
@@ -84,6 +118,17 @@ func (ad *AdminHandler) GetUsers(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "Successfully retrieved the users", users, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
+// BlockUser godoc
+// @Summary Block user
+// @Description Blocks a user
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Param id query int true "User ID"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /admin/block [post]
 func (ad *AdminHandler) BlockUser(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
@@ -100,6 +145,17 @@ func (ad *AdminHandler) BlockUser(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "the user is blockes", nil, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
+// UnBlockUser godoc
+// @Summary Unblock user
+// @Description Unblocks a user
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Param id query int true "User ID"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /admin/unblock [post]
 func (ad *AdminHandler) UnBlockUser(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
@@ -116,6 +172,16 @@ func (ad *AdminHandler) UnBlockUser(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "the user is unblocked", nil, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
+// Dashboard godoc
+// @Summary Get admin dashboard
+// @Description Retrieves the admin dashboard
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /admin/dashboard [get]
 func (ad *AdminHandler) Dashboard(c *gin.Context) {
 
 	adminDashboard, err := ad.adminUseCase.Dashboard()
@@ -128,6 +194,17 @@ func (ad *AdminHandler) Dashboard(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "admin dashboard displayed fine", adminDashboard, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
+// FilterSalesReport godoc
+// @Summary Filter sales report
+// @Description Filters the sales report by time period
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Param period query string true "Time period"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /admin/sales-report [get]
 
 func (ad *AdminHandler) FilterSalesReport(c *gin.Context) {
 
@@ -144,6 +221,17 @@ func (ad *AdminHandler) FilterSalesReport(c *gin.Context) {
 
 }
 
+// SalesReportByDate godoc
+// @Summary Get sales report by date
+// @Description Retrieves the sales report for a specific date range
+// @Tags Admin
+// @Accept json
+// @Produce json
+// @Param start query string true "Start date"
+// @Param end query string true "End date"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /admin/sales-report-by-date [get]
 func (ad *AdminHandler) SalesReportByDate(c *gin.Context) {
 	startDateStr := c.Query("start")
 	endDateStr := c.Query("end")

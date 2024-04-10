@@ -8,8 +8,14 @@ import (
 	"os"
 )
 
-func main() {
+// @title Eatry - E-commerce API
+// @description This is the API documentation for Eatry - E-commerce application.
+// @version 1.0
+// @host localhost:8000
+// @BasePath
 
+func main() {
+	// // swagger 2.0 Meta Information
 	docs.SwaggerInfo.Title = "Eatry - E-commerce"
 	docs.SwaggerInfo.Description = "Eatry- E-commerce"
 	docs.SwaggerInfo.Version = "1.0"

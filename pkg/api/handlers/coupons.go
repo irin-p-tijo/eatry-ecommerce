@@ -19,6 +19,7 @@ func NewCouponHandler(use services.CouponUseCase) *CouponHandler {
 		usecase: use,
 	}
 }
+
 func (coup *CouponHandler) CreateNewCoupon(c *gin.Context) {
 	var coupon models.AddCoupon
 	if err := c.BindJSON(&coupon); err != nil {
@@ -38,6 +39,7 @@ func (coup *CouponHandler) CreateNewCoupon(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
 func (coup *CouponHandler) MakeCouponInvalid(c *gin.Context) {
 	id, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
@@ -56,6 +58,7 @@ func (coup *CouponHandler) MakeCouponInvalid(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
 func (co *CouponHandler) GetAllCoupons(c *gin.Context) {
 
 	coupons, err := co.usecase.GetAllCoupons()

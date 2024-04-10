@@ -20,6 +20,7 @@ func NewOrderHandler(useCase services.OrderUseCase) *OrderHandler {
 		orderUseCase: useCase,
 	}
 }
+
 func (o *OrderHandler) OrderItemsFromCart(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Query("user_id"))
 	if err != nil {
@@ -97,6 +98,7 @@ func (o *OrderHandler) CancelOrder(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
 func (o *OrderHandler) GetAllOrderDetailsForAdmin(c *gin.Context) {
 
 	pageStr := c.Query("page")
@@ -120,6 +122,7 @@ func (o *OrderHandler) GetAllOrderDetailsForAdmin(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
 func (o *OrderHandler) ApproveOrder(c *gin.Context) {
 
 	orderID := c.Query("order_id")
@@ -137,7 +140,7 @@ func (o *OrderHandler) ApproveOrder(c *gin.Context) {
 
 }
 
-//---------------------------PDF-------------------------------
+// ---------------------------PDF-------------------------------
 
 func (o *OrderHandler) GenerateInvoice(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Query("user_id"))
