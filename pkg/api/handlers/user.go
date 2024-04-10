@@ -20,6 +20,17 @@ func NewUserHandler(usecase services.UserUseCase) *UserHandler {
 		userUseCase: usecase,
 	}
 }
+
+// UserSignUp godoc
+// @Summary User sign up
+// @Description Register a new user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user body models.UserDetails true "User details"
+// @Success 201 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /users/signup [post]
 func (u *UserHandler) UserSignUp(c *gin.Context) {
 
 	var user models.UserDetails
@@ -51,6 +62,17 @@ func (u *UserHandler) UserSignUp(c *gin.Context) {
 	c.JSON(http.StatusCreated, successRes)
 
 }
+
+// LoginHandler godoc
+// @Summary User login
+// @Description Log in a user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user body models.UserLogin true "User credentials"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /users/login [post]
 func (u *UserHandler) LoginHandler(c *gin.Context) {
 
 	var user models.UserLogin
