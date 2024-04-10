@@ -18,6 +18,17 @@ func NewWalletHandler(walletusecase services.WalletUseCase) *WalletHandler {
 		walletUseCase: walletusecase,
 	}
 }
+
+// @Summary Get a user's wallet details
+// @Description Retrieves a user's wallet information
+// @Tags wallet
+// @Accept json
+// @Produce json
+// @Param user_id query int true "User ID"
+// @Success 201 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /wallet [get]
 func (wa *WalletHandler) GetWallet(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Query("user_id"))
 	if err != nil {
@@ -35,6 +46,17 @@ func (wa *WalletHandler) GetWallet(c *gin.Context) {
 	c.JSON(http.StatusCreated, successRes)
 
 }
+
+// @Summary Get a user's wallet transaction history
+// @Description Retrieves the transaction history for a user's wallet
+// @Tags wallet
+// @Accept json
+// @Produce json
+// @Param user_id query int true "User ID"
+// @Success 201 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /wallet/history [get]
 func (wa *WalletHandler) WalletHistory(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Query("user_id"))
 	if err != nil {

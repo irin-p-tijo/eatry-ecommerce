@@ -1,4 +1,19 @@
 definitions:
+  models.AddProduct:
+    properties:
+      category_id:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+      quantity:
+        type: integer
+      stock:
+        type: integer
+    type: object
   models.AdminLogin:
     properties:
       email:
@@ -266,6 +281,221 @@ paths:
       summary: Remove a product from the cart
       tags:
       - Cart
+  /order/approve:
+    put:
+      consumes:
+      - application/json
+      description: Approves an order placed by a user
+      parameters:
+      - description: Order ID
+        in: query
+        name: order_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Approve an order by Admin
+      tags:
+      - order (admin)
+  /order/cancel:
+    delete:
+      consumes:
+      - application/json
+      description: Cancels an order for a user
+      parameters:
+      - description: User ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      - description: Order ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Cancel an order
+      tags:
+      - order
+  /order/details:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a user's order details based on pagination parameters
+      parameters:
+      - description: User ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: count
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get order details for a user
+      tags:
+      - order
+  /order/invoice:
+    get:
+      responses: {}
+  /orders:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all order details for Admin with pagination
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get all order details for Admin
+      tags:
+      - order (admin)
+  /product:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new product in the system
+      parameters:
+      - description: Product Details
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.AddProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Add a new product
+      tags:
+      - product
+  /product/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a product from the system by its ID
+      parameters:
+      - description: Product ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Delete a product
+      tags:
+      - product
+    put:
+      responses: {}
+  /product/filter:
+    post:
+      consumes:
+      - application/json
+      description: Filters products based on the provided category information in
+        JSON format
+      parameters:
+      - description: Category information
+        in: body
+        name: data
+        required: true
+        schema:
+          additionalProperties:
+            type: integer
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Filter products by category
+      tags:
+      - product
+  /products:
+    get:
+      responses: {}
   /users/login:
     post:
       consumes:
@@ -318,4 +548,54 @@ paths:
       summary: User sign up
       tags:
       - users
+  /wallet:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a user's wallet information
+      parameters:
+      - description: User ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get a user's wallet details
+      tags:
+      - wallet
+  /wallet/history:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves the transaction history for a user's wallet
+      parameters:
+      - description: User ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get a user's wallet transaction history
+      tags:
+      - wallet
 swagger: "2.0"

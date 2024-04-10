@@ -21,6 +21,20 @@ func NewOrderHandler(useCase services.OrderUseCase) *OrderHandler {
 	}
 }
 
+// OrderItemsFromCart godoc
+//@Summary Order items from user cart
+//@Description Creates an order from the items in the user's cart
+//@Tags order
+//@Accept json
+//@Produce json
+//@Param user_id query int true "User ID"
+//@Param orderFromCart body models.OrderFromCart true "Order Details"
+//@Success 200 {object} response.Response{}
+//@Failure 400 {object} response.Response{}
+//@Failure 400 {object} response.Response{}
+//@Failure 500 {object} response.Response{}
+//@Router /order [post]
+
 func (o *OrderHandler) OrderItemsFromCart(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Query("user_id"))
 	if err != nil {
@@ -45,6 +59,20 @@ func (o *OrderHandler) OrderItemsFromCart(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// GetOrderDetails godoc
+// @Summary Get order details for a user
+// @Description Retrieves a user's order details based on pagination parameters
+// @Tags order
+// @Accept json
+// @Produce json
+// @Param user_id query int true "User ID"
+// @Param page query int true "Page number"
+// @Param count query int true "Number of items per page"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /order/details [get]
 func (o *OrderHandler) GetOrderDetails(c *gin.Context) {
 
 	pageStr := c.Query("page")
@@ -79,6 +107,16 @@ func (o *OrderHandler) GetOrderDetails(c *gin.Context) {
 
 }
 
+// @Summary Cancel an order
+// @Description Cancels an order for a user
+// @Tags order
+// @Accept json
+// @Produce json
+// @Param user_id query int true "User ID"
+// @Param id query string true "Order ID"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /order/cancel [delete]
 func (o *OrderHandler) CancelOrder(c *gin.Context) {
 
 	orderID := c.Query("id")
@@ -99,6 +137,16 @@ func (o *OrderHandler) CancelOrder(c *gin.Context) {
 
 }
 
+// @Summary Get all order details for Admin
+// @Description Retrieves all order details for Admin with pagination
+// @Tags order (admin)
+// @Accept json
+// @Produce json
+// @Param page query int true "Page number"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /orders [get]
 func (o *OrderHandler) GetAllOrderDetailsForAdmin(c *gin.Context) {
 
 	pageStr := c.Query("page")
@@ -123,6 +171,15 @@ func (o *OrderHandler) GetAllOrderDetailsForAdmin(c *gin.Context) {
 
 }
 
+// @Summary Approve an order by Admin
+// @Description Approves an order placed by a user
+// @Tags order (admin)
+// @Accept json
+// @Produce json
+// @Param order_id query string true "Order ID"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /order/approve [put]
 func (o *OrderHandler) ApproveOrder(c *gin.Context) {
 
 	orderID := c.Query("order_id")
@@ -141,7 +198,18 @@ func (o *OrderHandler) ApproveOrder(c *gin.Context) {
 }
 
 // ---------------------------PDF-------------------------------
+//@Summary Generate invoice for an order
+//@Description Generates a PDF invoice for a specific order
+//@Tags order
+//@Produce pdf
+//@Param user_id query int true "User ID"
+//@Param order_id query string true "Order ID"
+//@Success 200 {object} response.Response{}
+//@Failure 400 {object} response.Response{}
 
+//@Failure 502 {object} response.Response{}
+
+// @Router /order/invoice [get]
 func (o *OrderHandler) GenerateInvoice(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Query("user_id"))
 	if err != nil {
