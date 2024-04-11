@@ -20,16 +20,16 @@ func NewAdminHandler(usecase services.AdminUseCase) *AdminHandler {
 	}
 }
 
-// CreateAdmin godoc
-// @Summary Create a new admin
+// @Summary Create a new admin user
 // @Description Creates a new admin account
-// @Tags Admin
+// @Tags admin
 // @Accept json
 // @Produce json
-// @Param body body models.AdminSignUp true "Admin signup details"
+// @Param admin body models.AdminSignUp true "Admin Signup Details"
 // @Success 201 {object} response.Response{}
 // @Failure 400 {object} response.Response{}
-// @Router /admin/create [post]
+// @Failure 500 {object} response.Response{}
+// @Router /admin [post]
 
 func (ad *AdminHandler) CreateAdmin(c *gin.Context) {
 	var admin models.AdminSignUp

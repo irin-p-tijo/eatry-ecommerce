@@ -21,19 +21,18 @@ func NewOrderHandler(useCase services.OrderUseCase) *OrderHandler {
 	}
 }
 
-// OrderItemsFromCart godoc
-//@Summary Order items from user cart
-//@Description Creates an order from the items in the user's cart
-//@Tags order
-//@Accept json
-//@Produce json
-//@Param user_id query int true "User ID"
-//@Param orderFromCart body models.OrderFromCart true "Order Details"
-//@Success 200 {object} response.Response{}
-//@Failure 400 {object} response.Response{}
-//@Failure 400 {object} response.Response{}
-//@Failure 500 {object} response.Response{}
-//@Router /order [post]
+// @Summary Create an order from cart items
+// @Description Creates a new order from the selected items in a user's cart
+// @Tags order
+// @Accept json
+// @Produce json
+// @Param user_id query int true "User ID"
+// @Param orderFromCart body models.OrderFromCart true "Order Details"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /order/fromCart [post]
 
 func (o *OrderHandler) OrderItemsFromCart(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Query("user_id"))
