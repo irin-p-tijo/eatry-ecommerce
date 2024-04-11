@@ -12,7 +12,7 @@ import (
 // @description This is the API documentation for Eatry - E-commerce application.
 // @version 1.0
 // @host localhost:8000
-// @BasePath
+// @BasePath /
 
 func main() {
 	// // swagger 2.0 Meta Information

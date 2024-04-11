@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   domain.Category:
     properties:

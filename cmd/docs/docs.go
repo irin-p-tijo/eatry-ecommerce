@@ -1649,7 +1649,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8000",
-	BasePath:         "",
+	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Eatry - E-commerce API",
 	Description:      "This is the API documentation for Eatry - E-commerce application.",
