@@ -21,6 +21,17 @@ func NewPaymentHandler(usecase services.PaymentUseCase) *PaymentHandler {
 		paymentUseCase: usecase,
 	}
 }
+
+// @Summary Add a new payment method
+// @Description Creates a new payment method for a user
+// @Tags payment
+// @Accept json
+// @Produce json
+// @Param paymentmethod body domain.PaymentMethod true "Payment Method Details"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /payment/add [post]
 func (pay *PaymentHandler) AddPaymentMethods(c *gin.Context) {
 	var addpayment domain.PaymentMethod
 
@@ -38,6 +49,17 @@ func (pay *PaymentHandler) AddPaymentMethods(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "the paymentmethod is added", paymentresponse, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
+// @Summary Delete a payment method
+// @Description Deletes a payment method by its ID
+// @Tags payment
+// @Accept json
+// @Produce json
+// @Param id query int true "Payment Method ID"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /payment/:id [delete]
 func (pay *PaymentHandler) DeletePaymentMethods(c *gin.Context) {
 	paymentID, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
@@ -55,6 +77,19 @@ func (pay *PaymentHandler) DeletePaymentMethods(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "the paymentmethod is deleetd", nil, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
+// @Summary Get all payment methods for a user
+// @Description Retrieves a list of all payment methods associated with a user account
+// @Tags payment
+// @Accept json
+// @Produce json
+// @Param page query int true "Page number"
+// @Param count query int true "Number of items per page"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /payment [get]
 func (pay *PaymentHandler) GetAllPaymentMethods(c *gin.Context) {
 	pagestr := c.Query("page")
 	page, err := strconv.Atoi(pagestr)
@@ -79,6 +114,17 @@ func (pay *PaymentHandler) GetAllPaymentMethods(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "the product is deleted", payment, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
+// @Summary Initiate a Razorpay payment
+// @Description Creates an order and generates a Razorpay ID for payment processing
+// @Tags payment
+// @Produce text/html
+// @Param id query string true "Order ID"
+// @Param user_id query string true "User ID"
+// @Success 200 "payment details loaded on ui"
+// @Failure 500 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /payment/razor [get]
 func (pay *PaymentHandler) MakePaymentRazorPay(c *gin.Context) {
 	orderID := c.Query("id")
 	userID := c.Query("user_id")
@@ -111,6 +157,19 @@ func (pay *PaymentHandler) MakePaymentRazorPay(c *gin.Context) {
 		"total":       int(orderDetail.FinalPrice),
 	})
 }
+
+// @Summary Verify a Razorpay payment
+// @Description Verifies the status of a Razorpay payment and updates payment details
+// @Tags payment
+// @Accept json
+// @Produce json
+// @Param order_id query string true "Order ID"
+// @Param payment_id query string true "Payment ID"
+// @Param razor_id query string true "Razorpay ID"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /payment/verify [put]
+
 func (p *PaymentHandler) VerifyPayment(c *gin.Context) {
 
 	orderID := c.Query("order_id")

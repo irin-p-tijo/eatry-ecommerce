@@ -103,6 +103,19 @@ func (u *UserHandler) LoginHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
+// @Summary Add a new address for a user
+// @Description Creates a new address for a specific user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param user_id query int true "User ID"
+// @Param address body models.AddAddress true "Address Details"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /user/address [post]
 func (u *UserHandler) AddAddress(c *gin.Context) {
 
 	userID, err := strconv.Atoi(c.Query("user_id"))
@@ -129,6 +142,18 @@ func (u *UserHandler) AddAddress(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "Successfully added address", nil, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
+// @Summary Delete an address for a user
+// @Description Deletes a specific address for a user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param user_id query int true "User ID"
+// @Param id query int true "Address ID"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /user/address/:id [delete]
 func (u *UserHandler) DeleteAddress(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Query("user_id"))
 	if err != nil {
@@ -153,6 +178,17 @@ func (u *UserHandler) DeleteAddress(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "the address is deleted", nil, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
+// @Summary Get all addresses for a user
+// @Description Retrieves a list of all addresses for a specific user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param user_id query int true "User ID"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /user/address [get]
 func (u *UserHandler) GetAllAddress(c *gin.Context) {
 	id, err := strconv.Atoi(c.Query("user_id"))
 	if err != nil {
@@ -169,6 +205,17 @@ func (u *UserHandler) GetAllAddress(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "Successfully got all records", address, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
+// @Summary Get user profile details
+// @Description Retrieves the profile information for a specific user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param id query int true "User ID"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /user/profile [get]
 func (u *UserHandler) UserProfile(c *gin.Context) {
 	id, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
@@ -185,6 +232,17 @@ func (u *UserHandler) UserProfile(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "the userprofie dtails are retrived", userdetails, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
+// @Summary Get Checkout details for a user
+// @Description Retrieves the checkout details, including address and order items, for a user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param id query int true "User ID"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /user/checkout [get]
 func (u *UserHandler) CheckOut(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Query("id"))
 	if err != nil {

@@ -20,6 +20,16 @@ func NewCouponHandler(use services.CouponUseCase) *CouponHandler {
 	}
 }
 
+// @Summary Create a new coupon
+// @Description Creates a new coupon in the system
+// @Tags coupon
+// @Accept json
+// @Produce json
+// @Param coupon body models.AddCoupon true "Coupon Details"
+// @Success 200 {object}  response.Response{}
+// @Failure 400 {object}  response.Response{}
+// @Failure 400 {object}  response.Response{}
+// @Router /coupon [post]
 func (coup *CouponHandler) CreateNewCoupon(c *gin.Context) {
 	var coupon models.AddCoupon
 	if err := c.BindJSON(&coupon); err != nil {
@@ -40,6 +50,16 @@ func (coup *CouponHandler) CreateNewCoupon(c *gin.Context) {
 
 }
 
+// @Summary Make a coupon invalid
+// @Description Makes a specific coupon invalid by its ID
+// @Tags coupon
+// @Accept json
+// @Produce json
+// @Param id query int true "Coupon ID"
+// @Success 200 {object}  response.Response{}
+// @Failure 400 {object}  response.Response{}
+// @Failure 400 {object}  response.Response{}
+// @Router /coupon/invalid/:id [put]
 func (coup *CouponHandler) MakeCouponInvalid(c *gin.Context) {
 	id, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
@@ -59,6 +79,14 @@ func (coup *CouponHandler) MakeCouponInvalid(c *gin.Context) {
 
 }
 
+// @Summary Get all coupons
+// @Description Retrieves all coupons available in the system
+// @Tags coupon
+// @Accept json
+// @Produce json
+// @Success 200 {object}  response.Response{}
+// @Failure 400 {object}  response.Response{}
+// @Router /coupons [get]
 func (co *CouponHandler) GetAllCoupons(c *gin.Context) {
 
 	coupons, err := co.usecase.GetAllCoupons()

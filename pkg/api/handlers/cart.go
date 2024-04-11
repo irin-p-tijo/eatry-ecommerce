@@ -19,18 +19,17 @@ func NewCartHandler(usecase services.CartUseCase) *CartHandler {
 	}
 }
 
-// AddToCart godoc
-// @Summary Add a product to the cart
-// @Description Add a product to the cart for a specific user
-// @Tags Cart
+// @Summary Add a product to cart
+// @Description Adds a product to a user's shopping cart
+// @Tags cart
 // @Accept json
 // @Produce json
-// @Param user_id query int true "User ID"
 // @Param product_id query int true "Product ID"
+// @Param user_id query int true "User ID"
 // @Success 200 {object} response.Response{}
 // @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
 // @Router /cart/add [post]
-
 func (rt *CartHandler) AddToCart(c *gin.Context) {
 
 	productID, err := strconv.Atoi(c.Query("product_id"))
@@ -57,17 +56,17 @@ func (rt *CartHandler) AddToCart(c *gin.Context) {
 	c.JSON(http.StatusBadRequest, successRes)
 }
 
-// RemoveFromCart godoc
-// @Summary Remove a product from the cart
-// @Description Remove a product from the cart for a specific user
-// @Tags Cart
+// @Summary Remove a product from cart
+// @Description Removes a product from a user's shopping cart
+// @Tags cart
 // @Accept json
 // @Produce json
-// @Param user_id query int true "User ID"
 // @Param product_id query int true "Product ID"
+// @Param user_id query int true "User ID"
 // @Success 200 {object} response.Response{}
 // @Failure 400 {object} response.Response{}
-// @Router /cart/remove [post]
+// @Failure 400 {object} response.Response{}
+// @Router /cart/remove [delete]
 func (rt *CartHandler) RemoveFromCart(c *gin.Context) {
 	productID, err := strconv.Atoi(c.Query("product_id"))
 	if err != nil {
@@ -93,16 +92,16 @@ func (rt *CartHandler) RemoveFromCart(c *gin.Context) {
 
 }
 
-// DisplayCart godoc
-// @Summary Display the contents of the cart
-// @Description Display the contents of the cart for a specific user
-// @Tags Cart
+// @Summary Get all items in a user's cart
+// @Description Retrieves a list of all products in a user's shopping cart
+// @Tags cart
 // @Accept json
 // @Produce json
 // @Param user_id query int true "User ID"
 // @Success 200 {object} response.Response{}
 // @Failure 400 {object} response.Response{}
-// @Router /cart/display [get]
+// @Failure 400 {object} response.Response{}
+// @Router /cart [get]
 func (rt *CartHandler) DisplayCart(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Query("user_id"))
 	if err != nil {

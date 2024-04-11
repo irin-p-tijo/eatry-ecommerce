@@ -20,6 +20,16 @@ func NewCategoryHandler(usecase services.CategoryUseCase) *CategoryHandler {
 	}
 }
 
+// @Summary Add a new category
+// @Description Creates a new category in the system
+// @Tags category
+// @Accept json
+// @Produce json
+// @Param category body domain.Category true "Category Details"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /category [post]
 func (cat *CategoryHandler) AddCategory(c *gin.Context) {
 	var category domain.Category
 
@@ -39,6 +49,16 @@ func (cat *CategoryHandler) AddCategory(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary Delete a category
+// @Description Deletes a category from the system by its ID
+// @Tags category
+// @Accept json
+// @Produce json
+// @Param id query int true "Category ID"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /category/:id [delete]
 func (cat *CategoryHandler) DeleteCategory(c *gin.Context) {
 	CategoryID, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
@@ -58,6 +78,17 @@ func (cat *CategoryHandler) DeleteCategory(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary Get all categories
+// @Description Retrieves a list of categories based on pagination parameters
+// @Tags category
+// @Accept json
+// @Produce json
+// @Param page query int true "Page number"
+// @Param count query int true "Number of items per page"
+// @Success 200 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Failure 400 {object} response.Response{}
+// @Router /categories [get]
 func (cat *CategoryHandler) GetCategory(c *gin.Context) {
 	pagestr := c.Query("page")
 	page, err := strconv.Atoi(pagestr)

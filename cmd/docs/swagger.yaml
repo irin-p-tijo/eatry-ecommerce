@@ -1,4 +1,62 @@
 definitions:
+  domain.Category:
+    properties:
+      category:
+        type: string
+      id:
+        type: integer
+    type: object
+  domain.PaymentMethod:
+    properties:
+      id:
+        type: integer
+      payment_name:
+        type: string
+    type: object
+  models.AddAddress:
+    properties:
+      city:
+        type: string
+      district:
+        type: string
+      house_name:
+        type: string
+      name:
+        type: string
+      pin:
+        type: string
+      state:
+        type: string
+      street:
+        type: string
+      user_id:
+        type: integer
+    required:
+    - city
+    - district
+    - house_name
+    - name
+    - pin
+    - state
+    - street
+    - user_id
+    type: object
+  models.AddCoupon:
+    properties:
+      coupon:
+        type: string
+      discount_percentage:
+        type: integer
+      minimum_price:
+        type: number
+      validity:
+        type: boolean
+    required:
+    - coupon
+    - discount_percentage
+    - minimum_price
+    - validity
+    type: object
   models.AddProduct:
     properties:
       category_id:
@@ -226,11 +284,11 @@ paths:
       summary: Get users
       tags:
       - Admin
-  /cart/display:
+  /cart:
     get:
       consumes:
       - application/json
-      description: Display the contents of the cart for a specific user
+      description: Retrieves a list of all products in a user's shopping cart
       parameters:
       - description: User ID
         in: query
@@ -248,25 +306,25 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
-      summary: Display the contents of the cart
+      summary: Get all items in a user's cart
       tags:
-      - Cart
-  /cart/remove:
+      - cart
+  /cart/add:
     post:
       consumes:
       - application/json
-      description: Remove a product from the cart for a specific user
+      description: Adds a product to a user's shopping cart
       parameters:
-      - description: User ID
-        in: query
-        name: user_id
-        required: true
-        type: integer
       - description: Product ID
         in: query
         name: product_id
         required: true
         type: integer
+      - description: User ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -278,9 +336,190 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
-      summary: Remove a product from the cart
+      summary: Add a product to cart
       tags:
-      - Cart
+      - cart
+  /cart/remove:
+    delete:
+      consumes:
+      - application/json
+      description: Removes a product from a user's shopping cart
+      parameters:
+      - description: Product ID
+        in: query
+        name: product_id
+        required: true
+        type: integer
+      - description: User ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Remove a product from cart
+      tags:
+      - cart
+  /categories:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of categories based on pagination parameters
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: count
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get all categories
+      tags:
+      - category
+  /category:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new category in the system
+      parameters:
+      - description: Category Details
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Category'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Add a new category
+      tags:
+      - category
+  /category/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a category from the system by its ID
+      parameters:
+      - description: Category ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Delete a category
+      tags:
+      - category
+  /coupon:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new coupon in the system
+      parameters:
+      - description: Coupon Details
+        in: body
+        name: coupon
+        required: true
+        schema:
+          $ref: '#/definitions/models.AddCoupon'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Create a new coupon
+      tags:
+      - coupon
+  /coupon/invalid/:id:
+    put:
+      consumes:
+      - application/json
+      description: Makes a specific coupon invalid by its ID
+      parameters:
+      - description: Coupon ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Make a coupon invalid
+      tags:
+      - coupon
+  /coupons:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all coupons available in the system
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get all coupons
+      tags:
+      - coupon
   /order/approve:
     put:
       consumes:
@@ -407,6 +646,114 @@ paths:
       summary: Get all order details for Admin
       tags:
       - order (admin)
+  /payment:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all payment methods associated with a user
+        account
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: count
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get all payment methods for a user
+      tags:
+      - payment
+  /payment/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a payment method by its ID
+      parameters:
+      - description: Payment Method ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Delete a payment method
+      tags:
+      - payment
+  /payment/add:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new payment method for a user
+      parameters:
+      - description: Payment Method Details
+        in: body
+        name: paymentmethod
+        required: true
+        schema:
+          $ref: '#/definitions/domain.PaymentMethod'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Add a new payment method
+      tags:
+      - payment
+  /payment/razor:
+    get:
+      description: Creates an order and generates a Razorpay ID for payment processing
+      parameters:
+      - description: Order ID
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: User ID
+        in: query
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: payment details loaded on ui
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Initiate a Razorpay payment
+      tags:
+      - payment
   /product:
     post:
       consumes:
@@ -496,6 +843,146 @@ paths:
   /products:
     get:
       responses: {}
+  /user/address:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all addresses for a specific user
+      parameters:
+      - description: User ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get all addresses for a user
+      tags:
+      - user
+    post:
+      consumes:
+      - application/json
+      description: Creates a new address for a specific user
+      parameters:
+      - description: User ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      - description: Address Details
+        in: body
+        name: address
+        required: true
+        schema:
+          $ref: '#/definitions/models.AddAddress'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Add a new address for a user
+      tags:
+      - user
+  /user/address/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a specific address for a user
+      parameters:
+      - description: User ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      - description: Address ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Delete an address for a user
+      tags:
+      - user
+  /user/checkout:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves the checkout details, including address and order items,
+        for a user
+      parameters:
+      - description: User ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get Checkout details for a user
+      tags:
+      - user
+  /user/profile:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves the profile information for a specific user
+      parameters:
+      - description: User ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get user profile details
+      tags:
+      - user
   /users/login:
     post:
       consumes:
