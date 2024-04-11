@@ -20,7 +20,7 @@ func main() {
 	docs.SwaggerInfo.Description = "Eatry- E-commerce"
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = "irin.store"
-	docs.SwaggerInfo.BasePath = ""
+	docs.SwaggerInfo.BasePath = "/"
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	config, configErr := config.LoadConfig()
