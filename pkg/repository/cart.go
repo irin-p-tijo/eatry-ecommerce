@@ -90,13 +90,7 @@ func (car *cartRepository) ProductExists(userID int, productID int) (bool, error
 	}
 	return count > 0, nil
 }
-func (car *cartRepository) GetQuantityAndProductDetails(userID int, productID int, cartdetails struct {
-	Quantity   int
-	TotalPrice float64
-}) (struct {
-	Quantity   int
-	TotalPrice float64
-}, error) {
+func (car *cartRepository) GetQuantityAndProductDetails(userID int, productID int, cartdetails interfaces.CartDetails) (interfaces.CartDetails, error) {
 	if err := car.DB.Raw("select quantity,total_price from carts where user_id = ? and product_id = ?", userID, productID).Scan(&cartdetails).Error; err != nil {
 		return struct {
 			Quantity   int
@@ -113,10 +107,7 @@ func (car *cartRepository) RemoveProductFromCart(userID int, productID int) erro
 
 	return nil
 }
-func (car *cartRepository) UpdateCartDetails(cartdetails struct {
-	Quantity   int
-	TotalPrice float64
-}, userId int, productId int) error {
+func (car *cartRepository) UpdateCartDetails(cartdetails interfaces.CartDetails, userId int, productId int) error {
 	if err := car.DB.Raw("update carts set quantity = ? , total_price = ? where user_id = ? and product_id = ? ", cartdetails.Quantity, cartdetails.TotalPrice, userId, productId).Scan(&cartdetails).Error; err != nil {
 		return err
 	}

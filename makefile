@@ -22,5 +22,17 @@ wire: ## Generate wire_gen.go
 swag: ## Generate swagger docs
 	swag init -g cmd/main.go -o ./cmd/docs
 
-build:
-	go build -o cmd/build cmd/main.go 
+# build:
+# 	go build -o cmd/build cmd/main.go 
+
+mock:
+	
+	mockgen -source=pkg/usecase/interfaces/user.go -destination=pkg/usecase/mock/user_mock.go -package=mock
+	mockgen -source=pkg/usecase/interfaces/admin.go -destination=pkg/usecase/mock/admin_mock.go -package=mock
+	mockgen -source=pkg/repository/interfaces/admin.go -destination=pkg/repository/mock/admin_mock.go -package=mock
+	mockgen -source=pkg/repository/interfaces/user.go -destination=pkg/repository/mock/user_mock.go -package=mock
+	mockgen -source=pkg/repository/interfaces/cart.go -destination=pkg/repository/mock/cart_mock.go -package=mock
+	
+	
+test: ##Run testing
+	go test ./...

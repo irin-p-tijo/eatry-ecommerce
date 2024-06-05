@@ -45,3 +45,4 @@ func LoadConfig() (Config, error) {
 // func GetConfig() Config {
 // 	return Config{}
 // }
+
