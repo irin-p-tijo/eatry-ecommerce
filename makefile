@@ -11,7 +11,7 @@ all: test build
 
 
 build: ${BINARY_DIR} ## Compile the code, build Executable File
-	$(GOCMD) build -o $(BINARY_DIR)/app -v ./cmd/api
+	$(GOCMD) build -o $(BINARY_DIR)/app -v ./cmd
 
 
 ${BINARY_DIR}:
@@ -23,7 +23,7 @@ run: ## Start application
 
 wire: ## Generate wire_gen.go
 	cd pkg/di && wire
-	
+
 swag: ## Generate swagger docs
 	swag init -g cmd/main.go -o ./cmd/docs
 
