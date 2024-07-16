@@ -22,8 +22,8 @@ wire: ## Generate wire_gen.go
 swag: ## Generate swagger docs
 	swag init -g cmd/main.go -o ./cmd/docs
 
-# build:
-# 	go build -o cmd/build cmd/main.go 
+#build:
+#	go build -o cmd/build cmd/main.go 
 
 mock:
 	
